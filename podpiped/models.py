@@ -23,7 +23,7 @@ class Podcast(BaseModel):
     author: str
     explicit: bool = False
     image: Optional[HttpUrl]
-    episodes: List[Episode] = []
+    episodes: List[Episode]
 
 
 class VideoStream(BaseModel):

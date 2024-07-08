@@ -1,6 +1,7 @@
 import requests_cache
 from .models import Channel, Stream
 
+
 class PipedApiClient:
     session = requests_cache.CachedSession('piped', expire_after=3600)
 

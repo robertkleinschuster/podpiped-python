@@ -1,32 +1,9 @@
 from feedgen.feed import FeedGenerator
-from .models import Podcast, Channel, Stream, Episode
+
+from podpiped.models import Podcast
 
 
-def channel2podcast(channel: Channel):
-    return Podcast(
-        id=channel.id,
-        title=channel.name,
-        description=str(channel.description),
-        image=channel.avatarUrl,
-        author=channel.name,
-        link=f"https://piped.video/channel/{channel.id}",
-    )
-
-
-def stream2episode(stream: Stream):
-    return Episode(
-        id=stream.hls,
-        title=str(stream.title),
-        description=str(stream.description),
-        duration=int(stream.duration),
-        enclosure_url=list(filter(
-            lambda video_stream: video_stream.videoOnly == False and video_stream.mimeType == 'video/mp4',
-            stream.videoStreams
-        ))[0].url
-    )
-
-
-def podcast2feed(podcast: Podcast) -> str:
+def generate_feed(podcast: Podcast) -> str:
     fg = FeedGenerator()
     fg.generator('podpiped')
     fg.id(str(podcast.id))
