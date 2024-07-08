@@ -31,15 +31,7 @@ def test_should_generate_valid_rss_podcast():
     items = channel.findall('item')
     assert len(items) == 2
 
-    episode1 = items[0]
-    assert episode1.find('title').text == 'Episode 1'
-    assert episode1.find('description').text == 'This is the first episode.'
-    assert episode1.find('enclosure').attrib['url'] == 'http://example.com/episode1.mp3'
-    assert episode1.find('enclosure').attrib['type'] == 'audio/mpeg'
-    assert episode1.find('itunes:duration', namespaces).text == "120"
-    assert episode1.find('itunes:episodeType', namespaces).text == 'full'
-
-    episode2 = items[1]
+    episode2 = items[0]
     assert episode2.find('title').text == 'Episode 2'
     assert episode2.find('description').text == 'This is the second episode.'
     assert episode2.find('enclosure').attrib['url'] == 'http://example.com/episode2.mp3'
@@ -47,3 +39,10 @@ def test_should_generate_valid_rss_podcast():
     assert episode2.find('itunes:duration', namespaces).text == "120"
     assert episode2.find('itunes:episodeType', namespaces).text == 'full'
 
+    episode1 = items[1]
+    assert episode1.find('title').text == 'Episode 1'
+    assert episode1.find('description').text == 'This is the first episode.'
+    assert episode1.find('enclosure').attrib['url'] == 'http://example.com/episode1.mp3'
+    assert episode1.find('enclosure').attrib['type'] == 'audio/mpeg'
+    assert episode1.find('itunes:duration', namespaces).text == "120"
+    assert episode1.find('itunes:episodeType', namespaces).text == 'full'

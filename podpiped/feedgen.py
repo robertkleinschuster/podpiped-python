@@ -19,7 +19,7 @@ def generate_feed(podcast: Podcast) -> str:
     fg.podcast.itunes_image(str(podcast.image))
 
     for episode in podcast.episodes:
-        fe = fg.add_entry()
+        fe = fg.add_entry(order="append")
         fe.id(str(episode.id))
         fe.title(episode.title)
         fe.description(episode.description)

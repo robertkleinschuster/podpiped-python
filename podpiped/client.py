@@ -11,7 +11,7 @@ class PipedApiClient:
     def get_video(self, video_id):
         response = self.session.get(f'{self.__base_url}/streams/{video_id}')
         response.raise_for_status()
-        return Stream.parse_obj(response.json())
+        return Stream.parse_obj({"id": video_id, **response.json()})
 
     def get_channel_info(self, channel_id):
         response = self.session.get(f'{self.__base_url}/channel/{channel_id}')

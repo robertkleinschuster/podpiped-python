@@ -1,5 +1,5 @@
 from typing import List
-from .models import Podcast, Channel, Stream, Episode
+from .models import Podcast, Channel, Stream, Episode, VideoStream
 
 
 class PodcastBuilderException(Exception):
@@ -10,36 +10,48 @@ class PodcastBuilderException(Exception):
 class PodcastBuilder:
     def __init__(self):
         self.__channel: Channel | None = None
-        self.__streams: List[Stream] = []
+        self.__episodes: List[Episode] = []
 
     def set_channel(self, channel: Channel):
         self.__channel = channel
 
     def add_stream(self, stream: Stream):
-        self.__streams.append(stream)
+        video_streams: List[VideoStream] = list(filter(
+            lambda vs: vs.videoOnly is False,
+            stream.videoStreams
+        ))
+
+        for video_stream in video_streams:
+            title = stream.title
+            id = stream.id
+            if video_stream.quality:
+                title += f' ({video_stream.quality})'
+                id += f'-{video_stream.quality}'
+
+            self.__episodes.append(
+                Episode(
+                    id=id,
+                    title=title,
+                    description=str(stream.description),
+                    duration=int(stream.duration),
+                    enclosure_url=video_stream.url,
+                    enclosure_type=video_stream.mimeType,
+                    enclosure_length=int(video_stream.contentLength or 0),
+                )
+            )
+
         return self
 
     @property
     def episode_count(self) -> int:
-        return len(self.__streams)
+        return len(self.__episodes)
 
     def build(self) -> Podcast:
-        if self.__channel == None:
+        if self.__channel is None:
             raise PodcastBuilderException("Channel must be set")
 
-        if len(self.__streams) == 0:
+        if self.episode_count == 0:
             raise PodcastBuilderException("Stream must be set")
-
-        episodes: List[Episode] = list(map(lambda stream: Episode(
-            id=stream.hls,
-            title=str(stream.title),
-            description=str(stream.description),
-            duration=int(stream.duration),
-            enclosure_url=list(filter(
-                lambda video_stream: video_stream.videoOnly == False and video_stream.mimeType == 'video/mp4',
-                stream.videoStreams
-            ))[0].url
-        ), self.__streams))
 
         return Podcast(
             id=self.__channel.id,
@@ -48,5 +60,5 @@ class PodcastBuilder:
             image=self.__channel.avatarUrl,
             author=self.__channel.name,
             link=f"https://piped.video/channel/{self.__channel.id}",
-            episodes=episodes
+            episodes=self.__episodes
         )

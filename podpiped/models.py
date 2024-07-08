@@ -4,7 +4,7 @@ from typing import List, Optional
 
 
 class Episode(BaseModel):
-    id: HttpUrl
+    id: str
     title: str
     description: str
     enclosure_url: HttpUrl
@@ -28,16 +28,19 @@ class Podcast(BaseModel):
 
 class VideoStream(BaseModel):
     url: HttpUrl
+    format: str
     mimeType: str
+    quality: Optional[str] = None
+    contentLength: Optional[int] = None
     videoOnly: Optional[bool] = None
 
 
 class Stream(BaseModel):
-    hls: HttpUrl
+    id: str
     title: Optional[str] = None
     description: Optional[str] = None
     uploadDate: Optional[str] = None
-    videoStreams: List[VideoStream]
+    videoStreams: List[VideoStream] = []
     duration: Optional[int] = None
     uploader: Optional[str] = None
     uploaderUrl: Optional[str] = None
