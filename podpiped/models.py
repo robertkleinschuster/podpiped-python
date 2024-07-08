@@ -48,7 +48,12 @@ class RelatedStream(BaseModel):
 
     @property
     def video_id(self) -> Optional[str]:
-        return parse_qs(urlparse(self.url).query).get("v")[0]
+        query = parse_qs(urlparse(self.url).query)
+        ids = query.get("v")
+        if ids and len(ids) == 1:
+            return ids[0]
+        else:
+            return None
 
 
 class Channel(BaseModel):
