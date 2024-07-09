@@ -12,25 +12,23 @@ class PodcastBuilder:
         self.__channel: Channel | None = None
         self.__episodes: List[Episode] = []
 
-    def set_channel(self, channel: Channel):
+    def set_channel(self, channel: Channel) -> 'PodcastBuilder':
         self.__channel = channel
+        return self
 
-    def add_stream(self, stream: Stream):
-        video_streams: List[VideoStream] = list(filter(
-            lambda vs: vs.videoOnly is False,
-            stream.videoStreams
-        ))
+    def add_stream(self, stream: Stream) -> 'PodcastBuilder':
+        video_streams: List[VideoStream] = [vs for vs in stream.videoStreams if not vs.videoOnly]
 
         for video_stream in video_streams:
             title = stream.title
-            id = stream.id
+            stream_id = stream.id
             if video_stream.quality:
                 title += f' ({video_stream.quality})'
-                id += f'-{video_stream.quality}'
+                stream_id += f'-{video_stream.quality}'
 
             self.__episodes.append(
                 Episode(
-                    id=id,
+                    id=stream_id,
                     title=title,
                     description=str(stream.description),
                     duration=int(stream.duration),
