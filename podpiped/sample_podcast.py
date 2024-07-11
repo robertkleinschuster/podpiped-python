@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from podpiped.models import Episode, Podcast
 
 sample_episodes = [
@@ -9,6 +11,7 @@ sample_episodes = [
         enclosure_length=23456789,
         enclosure_type="audio/mpeg",
         duration=120,
+        published=datetime.fromisoformat("2024-07-02T15:24:02-07:00"),
         episode_type="full"
     ),
     Episode(
@@ -19,6 +22,7 @@ sample_episodes = [
         enclosure_length=12345678,
         enclosure_type="audio/mpeg",
         duration=120,
+        published=datetime.fromisoformat("2024-07-02T15:24:02-07:00"),
         episode_type="full"
     )
 ]
