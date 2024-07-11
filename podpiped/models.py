@@ -1,3 +1,4 @@
+import datetime
 from urllib.parse import urlparse, parse_qs
 from pydantic import BaseModel, HttpUrl
 from typing import List, Optional
@@ -7,6 +8,7 @@ class Episode(BaseModel):
     id: str
     title: str
     description: str
+    published: datetime.datetime
     enclosure_url: HttpUrl
     enclosure_length: int = -1
     enclosure_type: str = "video/mp4"

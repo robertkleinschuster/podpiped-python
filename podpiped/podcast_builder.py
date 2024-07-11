@@ -32,6 +32,7 @@ class PodcastBuilder:
                     title=title,
                     description=str(stream.description),
                     duration=int(stream.duration),
+                    published=stream.uploadDate,
                     enclosure_url=video_stream.url,
                     enclosure_type=video_stream.mimeType,
                     enclosure_length=int(video_stream.contentLength or 0),

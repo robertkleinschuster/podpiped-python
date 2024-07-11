@@ -1,3 +1,4 @@
+import datetime
 from pydantic_core._pydantic_core import Url
 from podpiped.models import Channel, RelatedStream, Stream, VideoStream
 from podpiped.podcast_builder import PodcastBuilder, PodcastBuilderException
@@ -93,6 +94,7 @@ def test_should_build_podcast_from_channel_and_streams():
     assert episode1.enclosure_url == Url("https://example.com/episode.mp4")
     assert episode1.enclosure_type == "video/mp4"
     assert episode1.duration == 120
+    assert episode1.published == datetime.datetime.fromisoformat("2024-07-02T15:24:02-07:00")
 
     assert episode2.title == "My Episode 2"
     assert episode2.description == "This is my second episode."

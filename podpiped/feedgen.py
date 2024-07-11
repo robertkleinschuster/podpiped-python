@@ -17,6 +17,7 @@ def generate_feed(podcast: Podcast) -> str:
     fg.podcast.itunes_author(podcast.author)
     fg.podcast.itunes_explicit('yes' if podcast.explicit else 'no')
     fg.podcast.itunes_image(str(podcast.image))
+    fg.podcast.itunes_type('episodic')
 
     for episode in podcast.episodes:
         fe = fg.add_entry(order="append")
@@ -24,6 +25,7 @@ def generate_feed(podcast: Podcast) -> str:
         fe.title(episode.title)
         fe.description(episode.description)
         fe.enclosure(str(episode.enclosure_url), episode.enclosure_length, episode.enclosure_type)
+        fe.published(episode.published)
         fe.podcast.itunes_duration(episode.duration)
         fe.podcast.itunes_episode_type(episode.episode_type)
 
