@@ -50,6 +50,7 @@ class Stream(BaseModel):
 
 class RelatedStream(BaseModel):
     url: str
+    uploaderAvatar: Optional[HttpUrl] = None
 
     @property
     def video_id(self) -> Optional[str]:

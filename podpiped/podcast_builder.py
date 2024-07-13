@@ -55,7 +55,7 @@ class PodcastBuilder:
         return Podcast(
             id=self.__channel.id,
             title=self.__channel.name,
-            description=str(self.__channel.description),
+            description=self.__channel.description if self.__channel.description else self.__channel.name,
             image=self.__channel.avatarUrl,
             author=self.__channel.name,
             link=f"https://piped.video/channel/{self.__channel.id}",
